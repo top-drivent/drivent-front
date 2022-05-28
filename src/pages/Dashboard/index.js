@@ -10,11 +10,10 @@ import DashboardLayout from '../../layouts/Dashboard';
 
 export default function Dashboard() {
   const { eventInfo } = useContext(EventInfoContext);
-
+  
   return (
     <DashboardLayout background={eventInfo.backgroundImageUrl}>
       <NavigationBar />
-
       <Container>
         <Outlet />
       </Container>
