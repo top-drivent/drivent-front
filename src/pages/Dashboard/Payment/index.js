@@ -1,3 +1,8 @@
+import TicketAndPaymentForm from '../../../components/TicketAndPaymentForm';
+
 export default function Payment() {
-  return 'Pagamento: Em breve!';
+  return (
+    <TicketAndPaymentForm/>
+  );
 }
+
