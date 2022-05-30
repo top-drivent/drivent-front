@@ -27,7 +27,7 @@ export default function CompleteOrderOptions({ modalitySelected }) {
     console.log('reservada a ordem online: ', orderOnline);
   };
 
-  const newOrderPresential = (orderType) => {
+  const newOrderPresential = () => {
     const orderPresential = {
       modality: modalitySelected.modality,
       presentialValue: orderOptions.presencial.value,
@@ -79,7 +79,7 @@ export default function CompleteOrderOptions({ modalitySelected }) {
             <StyleLabel>
               Fechado! O total ficou em R$ {hotelOptionClicked.totalValue},00. Agora é só confirmar:
             </StyleLabel>
-            <Button onClick={() => newOrderPresential()}>RESERVAR INGRESSO</Button>;
+            <Button onClick={() => newOrderPresential()}>RESERVAR INGRESSO</Button>
           </>
         )}
       </>

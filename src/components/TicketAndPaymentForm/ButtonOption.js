@@ -19,7 +19,7 @@ export default function ButtonOption({
       selected={selected}
       type={type}
       onClick={() => {
-        selected[type] = text; // selected[modality] = presencial ou online
+        selected[type] = text;
         setSelected({ ...selected });
         handleClickOption(subtitle);
       }}
