@@ -19,7 +19,7 @@ export default function ButtonOption({
       selected={selected}
       type={type}
       onClick={() => {
-        selected[type] = text;
+        selected[type] = text; // selected[modality] = presencial ou online
         setSelected({ ...selected });
         handleClickOption(subtitle);
       }}
@@ -35,8 +35,8 @@ const ClickButton = styled.div`
   height: ${({ size, height }) => (height ? height : size)}px;
 
   border-radius: 20px;
-  ${({ text, selected, type }) =>
-    selected[type] === text ? 'background-color: #FFEED2;' : 'border: 1px solid #CECECE;'}
+  background-color: ${({ text, selected, type }) => (selected[type] === text ? '#FFEED2' : 'none')};
+  border: ${({ text, selected, type }) => (!(selected[type] === text) ? '1px solid #CECECE' : 'none')};
   display: flex;
   align-items: center;
   justify-content: center;
