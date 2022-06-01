@@ -1,13 +1,28 @@
 import styled from 'styled-components';
 
-export default function ButtonOption({ size, height, text, value, selected, setSelected, type }) {
+export default function ButtonOption({
+  size,
+  height,
+  text,
+  value,
+  selected,
+  setSelected,
+  type,
+  subtitle,
+  handleClickOption,
+}) {
   return (
-    <ClickButton size={size} height={height} text={text} selected={selected} type={type} 
+    <ClickButton
+      size={size}
+      height={height}
+      text={text}
+      selected={selected}
+      type={type}
       onClick={() => {
         selected[type] = text;
         setSelected({ ...selected });
-      }
-      }
+        handleClickOption(subtitle);
+      }}
     >
       <span>{text}</span>
       <p>{value}</p>
@@ -17,13 +32,11 @@ export default function ButtonOption({ size, height, text, value, selected, setS
 
 const ClickButton = styled.div`
   width: ${({ size }) => size}px;
-  height: ${({ size, height }) => (height)? height : size}px;
+  height: ${({ size, height }) => (height ? height : size)}px;
 
   border-radius: 20px;
-  ${({ text, selected, type }) => (selected[type] === text)?
-    'background-color: #FFEED2;':
-    'border: 1px solid #CECECE;'
-}
+  background-color: ${({ text, selected, type }) => (selected[type] === text ? '#FFEED2' : 'none')};
+  border: ${({ text, selected, type }) => (!(selected[type] === text) ? '1px solid #CECECE' : 'none')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,15 +46,14 @@ const ClickButton = styled.div`
   font-family: 'Roboto', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: #8E8E8E;
+  color: #8e8e8e;
 
   span {
     font-size: 16px;
     color: #454545;
   }
 
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 `;
-
