@@ -1,0 +1,27 @@
+import styled from 'styled-components';
+import InfoBox from './InfoBox';
+
+export default function PaymentForm({ order, setOrder }) {
+  console.log(order);
+
+  const InfoBoxText = `${order.modality} ${
+    order.hotelOption === 'withHotel' ? ' + Com hospedagem' : ' Sem Hospedagem'
+  }`;
+
+  const InfoBoxValue = `R$ ${order.totalValue}`;
+
+  return (
+    <>
+      <StyleLabel>Ingresso Escolhido</StyleLabel>
+
+      <InfoBox size={290} height={108} text={InfoBoxText} value={InfoBoxValue} />
+    </>
+  );
+}
+
+const StyleLabel = styled.p`
+  font-family: 'Roboto', sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  color: #8e8e8e;
+`;

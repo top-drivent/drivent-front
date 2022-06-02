@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Form/Button';
 
-export default function CompleteOrderOptions({ modalitySelected }) {
+export default function CompleteOrderOptions({ modalitySelected, order, setOrder }) {
   const [hotelOptionClicked, setHotelOptionClicked] = useState({ option: '', totalValue: 0 });
   const orderOptions = {
     online: {
@@ -25,6 +25,7 @@ export default function CompleteOrderOptions({ modalitySelected }) {
       value: orderOptions.online.value,
     };
     console.log('reservada a ordem online: ', orderOnline);
+    setOrder(orderOnline);
   };
 
   const newOrderPresential = () => {
@@ -35,6 +36,7 @@ export default function CompleteOrderOptions({ modalitySelected }) {
       totalValue: hotelOptionClicked.totalValue,
     };
     console.log('reservada a ordem presencial: ', orderPresential);
+    setOrder(orderPresential);
   };
 
   const handleHotelChoice = (orderType) => {
