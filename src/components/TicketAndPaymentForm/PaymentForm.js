@@ -9,14 +9,14 @@ export default function PaymentForm({ order, setOrder }) {
     order.hotelOption === 'withHotel' ? ' + Com hospedagem' : ' Sem Hospedagem'
   }`;
 
-  const InfoBoxValue = order.totalValue ? `R$ ${order.totalValue}` : `R$ ${order.value}`;
+  const InfoBoxValue = `R$ ${order.totalValue}`;
 
   return (
     <>
       <StyleLabel>Ingresso Escolhido</StyleLabel>
 
       <InfoBox size={290} height={108} text={InfoBoxText} value={InfoBoxValue} />
-      <CreditCardForm order={order} />
+      <CreditCardForm/>
     </>
   );
 }
