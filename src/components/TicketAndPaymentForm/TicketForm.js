@@ -1,10 +1,13 @@
+/* eslint-disable indent */
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import Message from '../Message';
+import InfoBox from './InfoBox';
 import useEnrollment from '../../hooks/api/useEnrollment';
 import ButtonOption from './ButtonOption';
 import { useState } from 'react';
 import CompleteOrderOptions from './completeOrderOptions';
+import CHECKVECTOR from '../../assets/images/checkVector.png';
 
 export default function TicketForm({ order, setOrder }) {
   const { enrollment } = useEnrollment();
@@ -20,13 +23,39 @@ export default function TicketForm({ order, setOrder }) {
   };
   const [subtitleByCLick, setSubtitleByClick] = useState('');
 
+  const InfoBoxText = `${enrollment?.payment?.ticketModality === 'PRESENTIAL' ? 'Presencial' : 'Online'} ${
+    enrollment?.payment?.ticketAccomodation ? ' + Com hospedagem' : ' Sem Hospedagem'
+  }`;
+
+  const InfoBoxValue =
+    enrollment?.payment?.ticketModality === 'PRESENTIAL' && enrollment?.payment?.ticketAccomodation
+      ? 'R$ 600'
+      : enrollment?.payment?.ticketModality === 'PRESENTIAL' && !enrollment?.payment?.ticketAccomodation
+      ? 'R$ 250'
+      : enrollment?.payment?.ticketModality === 'ONLINE'
+      ? 'R$ 100'
+      : null;
+
   const handleHotelorOnlineClick = (title) => {
     setSubtitleByClick(title);
   };
 
   return (
     <>
-      {enrollment ? (
+      {enrollment?.payment ? (
+        <>
+          <StyleLabel>Ingresso Escolhido</StyleLabel>
+          <InfoBox size={290} height={108} text={InfoBoxText} value={InfoBoxValue} />
+          <StyleLabel>Pagamento</StyleLabel>
+          <Container>
+            <img src={CHECKVECTOR} alt="" />
+            <div>
+              <p style={{ fontWeight: 'bold' }}>Pagamento confirmado!</p>
+              <p style={{ fontWeight: '400' }}>Prossiga para escolha de hospedagem e atividades</p>
+            </div>
+          </Container>
+        </>
+      ) : enrollment ? (
         <TicketFormStyled>
           <StyleLabel>Primeiro, escolha sua modalidade de ingresso</StyleLabel>
           <Options>
@@ -62,13 +91,10 @@ export default function TicketForm({ order, setOrder }) {
 }
 
 const Container = styled.div`
-  width: 100%;
-  height: 100%;
-
   display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 37px;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 `;
 
 const TicketFormStyled = styled.div`
@@ -88,10 +114,6 @@ const Options = styled.div`
   gap: 24px;
 
   margin-bottom: 45px;
-`;
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 20px !important;
 `;
 
 const StyleLabel = styled.p`
