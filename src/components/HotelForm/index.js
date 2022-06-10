@@ -9,16 +9,17 @@ export default function HotelForm() {
   return (
     <Container>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-      {enrollment?.payment ? null : (
+      {enrollment?.payment ? (
+        enrollment?.payment?.ticketAccomodation ? null : (
+          <Message
+            text="Sua modalidade de ingresso não inclui hospedagem
+        Prossiga para a escolha de atividades"
+          />
+        )
+      ) : (
         <Message
           text="Você precisa ter confirmado pagamento antes
         de fazer a escolha de hospedagem"
-        />
-      )}
-      {enrollment?.payment?.ticketAccomodation ? null : (
-        <Message
-          text="Sua modalidade de ingresso não inclui hospedagem
-        Prossiga para a escolha de atividades"
         />
       )}
     </Container>

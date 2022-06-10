@@ -1,17 +1,13 @@
 /* eslint-disable indent */
 import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
 import Message from '../Message';
 import InfoBox from './InfoBox';
-import useEnrollment from '../../hooks/api/useEnrollment';
 import ButtonOption from './ButtonOption';
 import { useState } from 'react';
 import CompleteOrderOptions from './completeOrderOptions';
 import CHECKVECTOR from '../../assets/images/checkVector.png';
 
-export default function TicketForm({ order, setOrder }) {
-  const { enrollment } = useEnrollment();
-
+export default function TicketForm({ order, setOrder, enrollment }) {
   const [selected, setSelected] = useState({
     modality: '',
     hotel: '',
@@ -27,14 +23,7 @@ export default function TicketForm({ order, setOrder }) {
     enrollment?.payment?.ticketAccomodation ? ' + Com hospedagem' : ' Sem Hospedagem'
   }`;
 
-  const InfoBoxValue =
-    enrollment?.payment?.ticketModality === 'PRESENTIAL' && enrollment?.payment?.ticketAccomodation
-      ? 'R$ 600'
-      : enrollment?.payment?.ticketModality === 'PRESENTIAL' && !enrollment?.payment?.ticketAccomodation
-      ? 'R$ 250'
-      : enrollment?.payment?.ticketModality === 'ONLINE'
-      ? 'R$ 100'
-      : null;
+  const InfoBoxValue = `${enrollment?.payment?.ticketValue}`;
 
   const handleHotelorOnlineClick = (title) => {
     setSubtitleByClick(title);

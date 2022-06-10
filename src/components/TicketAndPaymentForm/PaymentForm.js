@@ -2,9 +2,7 @@ import styled from 'styled-components';
 import InfoBox from './InfoBox';
 import CreditCardForm from './CreditCardForm';
 
-export default function PaymentForm({ order, setOrder }) {
-  console.log(order);
-
+export default function PaymentForm({ order, setOrder, enrollment }) {
   const InfoBoxText = `${order.modality} ${
     order.hotelOption === 'withHotel' ? ' + Com hospedagem' : ' Sem Hospedagem'
   }`;
@@ -16,7 +14,7 @@ export default function PaymentForm({ order, setOrder }) {
       <StyleLabel>Ingresso Escolhido</StyleLabel>
 
       <InfoBox size={290} height={108} text={InfoBoxText} value={InfoBoxValue} />
-      <CreditCardForm order={order} />
+      <CreditCardForm order={order} enrollment={enrollment} />
     </>
   );
 }

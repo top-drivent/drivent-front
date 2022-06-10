@@ -8,13 +8,10 @@ import { FormWrapper } from './FormWrapper';
 import { ErrorMsg } from './ErrorMsg';
 import styled from 'styled-components';
 import CreditCardMockUp from './CreditCardMockUp';
-import useEnrollment from '../../hooks/api/useEnrollment';
 import Button from '../Form/Button';
 import useSavePayment from '../../hooks/api/useSavePayment';
 
-export default function CreditCardForm({ order }) {
-  const { enrollment } = useEnrollment();
-  console.log('enrollment', enrollment);
+export default function CreditCardForm({ order, enrollment }) {
   const { savePaymentLoading, savePayment } = useSavePayment();
   const { handleSubmit, handleChange, data, errors } = useForm({
     validations: FormValidations,
@@ -27,15 +24,11 @@ export default function CreditCardForm({ order }) {
         enrollmentId: enrollment.id,
         ticketModality: order.modality === 'Presencial' ? 'PRESENTIAL' : order.modality === 'Online' ? 'ONLINE' : null,
         ticketAccomodation: order.hotelOption === 'withHotel' ? true : false,
-        cardNumber: data.cardNumber.replaceAll(' ', ''),
-        name: data.name,
-        expireDate: data.expireDate,
-        cvc: data.cvc,
+        ticketValue: order.totalValue ? `R$ ${order.totalValue}` : `R$ ${order.value}`,
       };
       try {
-        console.log('data paymente', newData);
         await savePayment(newData);
-        console.log('Paymente saved!');
+        window.location.reload(false);
         toast('Informações salvas com sucesso!');
       } catch (err) {
         toast('Não foi possível salvar suas informações!');
