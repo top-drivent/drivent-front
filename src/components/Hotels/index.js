@@ -1,18 +1,24 @@
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
-import useRoom from '../../hooks/api/useRoom';
 import FormHotel from './FormHotel';
 import ResumeHotelSelected from './ResumeHotelSelected';
+import { useState } from 'react';
+import useRoom from '../../hooks/api/useRoom';
+import { useEffect } from 'react';
 
 export default function Hotels() {
   const { bed } = useRoom();
+  const [roomSelected, setRoomSelected] = useState(false);
+  useEffect(() => {
+    if(bed) setRoomSelected(true);
+  });
 
   return (
     <Container>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-      {(bed)? 
-        <ResumeHotelSelected room={bed.room} hotel={bed.room.hotel}/>
-        : <FormHotel/>}
+      {(roomSelected)? 
+        <ResumeHotelSelected/>
+        : <FormHotel setRoomSelected={setRoomSelected}/>}
     </Container>
   );
 }

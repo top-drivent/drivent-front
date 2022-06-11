@@ -1,17 +1,26 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import Button from '../Form/Button';
+import useRoom from '../../hooks/api/useRoom';
 
-export default function ResumeHotelSelected({ room, hotel }) {
+export default function ResumeHotelSelected() {
+  const { bed } = useRoom();
+  const [room, setRoom] = useState({});
+  const [hotel, setHotel] = useState({});
   const [count, setCount] = useState(0);
-
+  console.log('room', room);
+  console.log('bed', bed);
   useEffect(() => {
-    let countPeople = 0;
-    room.bed.forEach((data) => {
-      if (data.enrollmentId) countPeople +=1;
-    });
-    setCount(countPeople - 1);
-  });
+    if(bed) {
+      setRoom(bed.room);
+      setHotel(bed.room.hotel);
+      let countPeople = 0;
+      bed.room.bed.forEach((data) => {
+        if (data.enrollmentId) countPeople +=1;
+      });
+      setCount(countPeople - 1);
+    }
+  }, [bed]);
 
   return (
     <>
@@ -21,7 +30,7 @@ export default function ResumeHotelSelected({ room, hotel }) {
         <HotelName>{hotel.name}</HotelName>
         <div>
           <InfoTitle>Quarto reservado</InfoTitle>
-          <InfoText>{room.id} ({room.accomodationsType.type})</InfoText>
+          <InfoText>{room.id} ({room.accomodationsType?.type})</InfoText>
         </div>
         <div>
           <InfoTitle>Pessoas no seu quarto</InfoTitle>

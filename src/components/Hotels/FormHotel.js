@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
 import useHotel from '../../hooks/api/useHotel';
 import HotelInfo from './HotelInfo';
 import { toast } from 'react-toastify';
@@ -9,13 +8,11 @@ import Button from '../Form/Button';
 import useBookHotelRoom from '../../hooks/api/useBookHotelRoom';
 import useEnrollment from '../../hooks/api/useEnrollment';
 import useToken from '../../hooks/useToken';
-import useRoom from '../../hooks/api/useRoom';
 
-export default function FormHotel() {
+export default function FormHotel({ setRoomSelected }) {
   const token = useToken();
   const { hotels } = useHotel();
   const { selectRoom } = useBookHotelRoom();
-  const { room } = useRoom();
   const { enrollment } = useEnrollment();
   const [hotel, setHotel] = useState({
     id: null,
@@ -25,13 +22,14 @@ export default function FormHotel() {
   const [selectedRoom, setSelectedRoom] = useState({
     id: null
   });
-  console.log(room);
+
   async function submit() {
     try {
       await selectRoom({
         id: selectedRoom.id,
         enrollmentId: enrollment.id
       }, token);
+      setRoomSelected(true);
       toast('Hotel reservado com sucesso!');
     } catch {
       toast('Falha ao reservar o hotel!');
