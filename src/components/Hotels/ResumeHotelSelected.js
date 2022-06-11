@@ -8,8 +8,7 @@ export default function ResumeHotelSelected() {
   const [room, setRoom] = useState({});
   const [hotel, setHotel] = useState({});
   const [count, setCount] = useState(0);
-  console.log('room', room);
-  console.log('bed', bed);
+
   useEffect(() => {
     if(bed) {
       setRoom(bed.room);
