@@ -3,19 +3,19 @@ import { useEffect, useState } from 'react';
 import Button from '../Form/Button';
 import useRoom from '../../hooks/api/useRoom';
 
-export default function ResumeHotelSelected() {
+export default function ResumeHotelSelected({ setChangeHotelClick }) {
   const { bed } = useRoom();
   const [room, setRoom] = useState({});
   const [hotel, setHotel] = useState({});
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if(bed) {
+    if (bed) {
       setRoom(bed.room);
       setHotel(bed.room.hotel);
       let countPeople = 0;
       bed.room.bed.forEach((data) => {
-        if (data.enrollmentId) countPeople +=1;
+        if (data.enrollmentId) countPeople += 1;
       });
       setCount(countPeople - 1);
     }
@@ -29,20 +29,22 @@ export default function ResumeHotelSelected() {
         <HotelName>{hotel.name}</HotelName>
         <div>
           <InfoTitle>Quarto reservado</InfoTitle>
-          <InfoText>{room.id} ({room.accomodationsType?.type})</InfoText>
+          <InfoText>
+            {room.id} ({room.accomodationsType?.type})
+          </InfoText>
         </div>
         <div>
           <InfoTitle>Pessoas no seu quarto</InfoTitle>
           <InfoText>{
-            (count === 0)? 'Somente você'
-              :(count === 1)? `Você e mais ${count} pessoa`
-                :`Você e mais ${count} pessoas`}
+            (count === 0) ? 'Somente você'
+              : (count === 1) ? `Você e mais ${count} pessoa`
+                : `Você e mais ${count} pessoas`}
           </InfoText>
         </div>
       </Box>
-      <Button>TROCAR DE QUARTO</Button>
+      <Button onClick={() => setChangeHotelClick(true)}>TROCAR DE QUARTO</Button>
     </>
-  );
+  ); //venyus
 }
 const HotelName = styled.h1`
   font-family: 'Roboto';
@@ -60,7 +62,7 @@ const Box = styled.div`
 
   padding: 16px 14px;
   border-radius: 10px;
-  background: #FFEED2;
+  background: #ffeed2;
   border: #cecece;
   display: flex;
   justify-content: space-between;
@@ -72,8 +74,8 @@ const Box = styled.div`
   font-size: 14px;
   font-weight: 400;
   color: #8e8e8e;
-  &:hover{
-    cursor:pointer;
+  &:hover {
+    cursor: pointer;
   }
 `;
 const InfoTitle = styled.h2`

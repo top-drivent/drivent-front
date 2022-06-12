@@ -9,16 +9,21 @@ import { useEffect } from 'react';
 export default function Hotels() {
   const { bed } = useRoom();
   const [roomSelected, setRoomSelected] = useState(false);
+  const [changeHotelClick, setChangeHotelClick] = useState(false);
   useEffect(() => {
-    if(bed) setRoomSelected(true);
+    if (bed) setRoomSelected(true);
   });
 
+  // const changeHotel = (hotel) => { };
+  console.log('trocado: ', changeHotelClick, roomSelected);
   return (
     <Container>
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
-      {(roomSelected)? 
-        <ResumeHotelSelected/>
-        : <FormHotel setRoomSelected={setRoomSelected}/>}
+      {roomSelected && changeHotelClick === false ? (
+        <ResumeHotelSelected setChangeHotelClick={setChangeHotelClick} />
+      ) : (
+        <FormHotel setRoomSelected={setRoomSelected} />
+      )}
     </Container>
   );
 }
