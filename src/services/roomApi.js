@@ -19,3 +19,13 @@ export async function getSelectedRoom(token) {
 
   return response.data;
 }
+
+export async function deleteBedRental(body, token) {
+  const response = await api.delete('/room', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    data: body,
+  });
+  return response.data;
+}

@@ -21,6 +21,17 @@ export default function ResumeHotelSelected({ setChangeHotelClick }) {
     }
   }, [bed]);
 
+  const handleChangeHotelClick = () => {
+    let changeHotel = {
+      selected: true,
+      lastHotel: {
+        id: hotel.id,
+        enrollmentId: bed.enrollmentId,
+        roomId: bed.roomId,
+      }
+    };
+    setChangeHotelClick(changeHotel);
+  };
   return (
     <>
       <StyleLabel>Você já escolheu seu quarto:</StyleLabel>
@@ -42,9 +53,9 @@ export default function ResumeHotelSelected({ setChangeHotelClick }) {
           </InfoText>
         </div>
       </Box>
-      <Button onClick={() => setChangeHotelClick(true)}>TROCAR DE QUARTO</Button>
+      <Button onClick={() => handleChangeHotelClick()}>TROCAR DE QUARTO</Button>
     </>
-  ); //venyus
+  );
 }
 const HotelName = styled.h1`
   font-family: 'Roboto';

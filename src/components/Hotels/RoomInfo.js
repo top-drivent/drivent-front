@@ -1,13 +1,11 @@
 import { useState } from 'react';
 import { useEffect } from 'react';
 import styled from 'styled-components';
-import useEnrollment from '../../hooks/api/useEnrollment';
 import PeopleIcon from '../PeopleIcon';
 
 export default function RoomInfo({ data, selectedRoom, setSelectedRoom }) {
   const { id, bed } = data;
   const [fullRoom, setFullRoom] = useState(false);
-  const { enrollment } = useEnrollment();
   useEffect(() => {
     const reservedBed = [];
     bed.forEach((el) => {

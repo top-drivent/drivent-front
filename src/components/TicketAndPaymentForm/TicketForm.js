@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
 import Message from '../Message';
 import useEnrollment from '../../hooks/api/useEnrollment';
 import ButtonOption from './ButtonOption';
@@ -61,16 +60,6 @@ export default function TicketForm({ order, setOrder }) {
   );
 }
 
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 37px;
-`;
-
 const TicketFormStyled = styled.div`
   width: 100%;
 
@@ -88,10 +77,6 @@ const Options = styled.div`
   gap: 24px;
 
   margin-bottom: 45px;
-`;
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 20px !important;
 `;
 
 const StyleLabel = styled.p`

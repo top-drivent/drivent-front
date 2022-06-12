@@ -3,8 +3,6 @@ import InfoBox from './InfoBox';
 import CreditCardForm from './CreditCardForm';
 
 export default function PaymentForm({ order, setOrder }) {
-  console.log(order);
-
   const InfoBoxText = `${order.modality} ${
     order.hotelOption === 'withHotel' ? ' + Com hospedagem' : ' Sem Hospedagem'
   }`;
