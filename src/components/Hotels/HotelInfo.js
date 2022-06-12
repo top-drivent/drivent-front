@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export default function HotelInfo({ data }) {
+export default function HotelInfo({ data, hotel, setHotel, setRooms }) {
   const { id, name, imageUrl, room, accomodationsHotel } = data;
 
   const accomodations = accomodationsHotel.map((el) => capitalizeFirstLetter(el.accomodationsType.type)).join(', ');
@@ -23,7 +23,13 @@ export default function HotelInfo({ data }) {
   const vacancyNumber = vacancyBeds.reduce((prev, curr) => curr + prev, 0);
 
   return (
-    <Hotel>
+    <Hotel hotelSelected={hotel.id} id={id} onClick={() => {
+      hotel.id = id;
+      hotel.name = name;
+
+      setHotel( { ...hotel } );
+      setRooms(room);
+    } }>
       <HotelPicture src={imageUrl} />
       <HotelName>{name}</HotelName>
       <div>
@@ -44,7 +50,7 @@ const Hotel = styled.div`
 
   padding: 16px 14px;
   border-radius: 10px;
-  background: #f1f1f1;
+  background: ${( { id, hotelSelected } ) => (id === hotelSelected)? '#FFEED2': '#f1f1f1'};
   border: #cecece;
   display: flex;
   justify-content: space-between;
@@ -56,6 +62,9 @@ const Hotel = styled.div`
   font-size: 14px;
   font-weight: 400;
   color: #8e8e8e;
+  &:hover{
+    cursor:pointer;
+  }
 `;
 
 const HotelName = styled.h1`
