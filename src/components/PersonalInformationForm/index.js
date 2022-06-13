@@ -56,7 +56,6 @@ export default function PersonalInformationForm() {
 
       try {
         await saveEnrollment(newData);
-        console.log('Enrollment saved!');
         navigate('/dashboard/payment');
         toast('Informações salvas com sucesso!');
       } catch (err) {
@@ -81,7 +80,6 @@ export default function PersonalInformationForm() {
 
   useEffect(() => {
     if (enrollment) {
-      console.log('log do enrollment', enrollment);
       setData({
         name: enrollment.name,
         cpf: enrollment.cpf,
