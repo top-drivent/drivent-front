@@ -15,9 +15,6 @@ export default function CreditCardForm({ order, enrollment }) {
   const { savePaymentLoading, savePayment } = useSavePayment();
   const { handleSubmit, handleChange, data, errors } = useForm({
     validations: FormValidations,
-
-    //CASO PRECISE ENVIAR INFORMAÇÕES PARA O SERVIDOR SOBRE O CARTÃO, MODIFICAR FUNÇÃO ABAIXO:
-
     // eslint-disable-next-line space-before-function-paren
     onSubmit: async (data) => {
       const newData = {
@@ -98,7 +95,11 @@ export default function CreditCardForm({ order, enrollment }) {
               {errors.cvc && <ErrorMsg>{errors.cvc}</ErrorMsg>}
             </InputWrapper>
           </Wrapper>
-          <Button type="submit" disabled={savePaymentLoading}>
+          <Button
+            type="submit"
+            disabled={savePaymentLoading}
+            style={{ position: 'absolute', top: '220px', left: '2px' }}
+          >
             FINALIZAR PAGAMENTO
           </Button>
         </FormWrapper>
@@ -117,6 +118,7 @@ const StyleLabel = styled.p`
 const ImageFormWrapper = styled.div`
   width: 100%;
   display: flex;
+  position: relative;
 `;
 
 const Wrapper = styled.div`
