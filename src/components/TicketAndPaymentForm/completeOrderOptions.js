@@ -24,7 +24,6 @@ export default function CompleteOrderOptions({ modalitySelected, order, setOrder
       modality: modalitySelected.modality,
       value: orderOptions.online.value,
     };
-    console.log('reservada a ordem online: ', orderOnline);
     setOrder(orderOnline);
   };
 
@@ -35,7 +34,6 @@ export default function CompleteOrderOptions({ modalitySelected, order, setOrder
       hotelOption: hotelOptionClicked.option,
       totalValue: hotelOptionClicked.totalValue,
     };
-    console.log('reservada a ordem presencial: ', orderPresential);
     setOrder(orderPresential);
   };
 

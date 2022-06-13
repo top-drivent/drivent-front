@@ -2,7 +2,7 @@ import React from 'react';
 import Input from '../Form/Input';
 import { InputWrapper } from './InputWrapper';
 import FormValidations from './FormValidations';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
 import { useForm } from '../../hooks/useForm';
 import { FormWrapper } from './FormWrapper';
 import { ErrorMsg } from './ErrorMsg';
