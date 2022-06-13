@@ -2,45 +2,41 @@ import React from 'react';
 import Input from '../Form/Input';
 import { InputWrapper } from './InputWrapper';
 import FormValidations from './FormValidations';
-// import { toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useForm } from '../../hooks/useForm';
 import { FormWrapper } from './FormWrapper';
 import { ErrorMsg } from './ErrorMsg';
 import styled from 'styled-components';
 import CreditCardMockUp from './CreditCardMockUp';
+import Button from '../Form/Button';
+import useSavePayment from '../../hooks/api/useSavePayment';
 
-export default function CreditCardForm() {
-  const {
-    handleChange,
-    data,
-    errors,
-  } = useForm({
+export default function CreditCardForm({ order, enrollment }) {
+  const { savePaymentLoading, savePayment } = useSavePayment();
+  const { handleSubmit, handleChange, data, errors } = useForm({
     validations: FormValidations,
-
-    /*
-    CASO PRECISE ENVIAR INFORMAÇÕES PARA O SERVIDOR SOBRE O CARTÃO, MODIFICAR FUNÇÃO ABAIXO:
-
-    onSubmit: async(data) => {
+    // eslint-disable-next-line space-before-function-paren
+    onSubmit: async (data) => {
       const newData = {
-        cardNumber: data.cardNumber,
-        name: data.name,
-        expireDate: data.expireDate,
-        cvc: data.cvc
+        enrollmentId: enrollment.id,
+        ticketModality: order.modality === 'Presencial' ? 'PRESENTIAL' : order.modality === 'Online' ? 'ONLINE' : null,
+        ticketAccomodation: order.hotelOption === 'withHotel' ? true : false,
+        ticketValue: order.totalValue ? `R$ ${order.totalValue}` : `R$ ${order.value}`,
       };
       try {
-        console.log(newData);
+        await savePayment(newData);
+        window.location.reload(false);
         toast('Informações salvas com sucesso!');
       } catch (err) {
         toast('Não foi possível salvar suas informações!');
       }
     },
-    */
 
     initialValues: {
       cardNumber: '',
       name: '',
       expireDate: '',
-      cvc: ''
+      cvc: '',
     },
   });
 
@@ -48,15 +44,14 @@ export default function CreditCardForm() {
     <>
       <StyleLabel>Pagamento</StyleLabel>
       <ImageFormWrapper>
-        <CreditCardMockUp 
-          size={420} 
+        <CreditCardMockUp
+          size={420}
           height={180}
           cardNumber={data?.cardNumber || '•••• •••• •••• ••••'}
           name={data?.name || 'YOUR NAME HERE'}
           expireDate={data?.expireDate || '••/••'}
         />
-        <FormWrapper>
-          
+        <FormWrapper onSubmit={handleSubmit}>
           <InputWrapper>
             <Input
               name="cardNumber"
@@ -71,13 +66,7 @@ export default function CreditCardForm() {
           </InputWrapper>
           <EgStyled>E.g.:49...,51...,36...,37...</EgStyled>
           <InputWrapper>
-            <Input
-              name="name"
-              label="Name"
-              type="text"
-              value={data?.name || ''}
-              onChange={handleChange('name')}
-            />
+            <Input name="name" label="Name" type="text" value={data?.name || ''} onChange={handleChange('name')} />
             {errors.name && <ErrorMsg>{errors.name}</ErrorMsg>}
           </InputWrapper>
           <Wrapper>
@@ -106,11 +95,18 @@ export default function CreditCardForm() {
               {errors.cvc && <ErrorMsg>{errors.cvc}</ErrorMsg>}
             </InputWrapper>
           </Wrapper>
+          <Button
+            type="submit"
+            disabled={savePaymentLoading}
+            style={{ position: 'absolute', top: '220px', left: '2px' }}
+          >
+            FINALIZAR PAGAMENTO
+          </Button>
         </FormWrapper>
       </ImageFormWrapper>
     </>
   );
-};
+}
 
 const StyleLabel = styled.p`
   font-family: 'Roboto', sans-serif;
@@ -120,25 +116,25 @@ const StyleLabel = styled.p`
 `;
 
 const ImageFormWrapper = styled.div`
-width: 100%;
-display: flex;
+  width: 100%;
+  display: flex;
+  position: relative;
 `;
 
 const Wrapper = styled.div`
-display: flex;
-flex-wrap: nowrap;
-flex-direction: row;
-justify-content: space-between;
-gap: 10px;
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
 
->div{
-  width:50%;
-  margin: 0 !important;
-  >div{
-  width:100%;
-  
-}
-}
+  > div {
+    width: 50%;
+    margin: 0 !important;
+    > div {
+      width: 100%;
+    }
+  }
 `;
 
 const EgStyled = styled.p`
@@ -147,4 +143,3 @@ const EgStyled = styled.p`
   font-weight: 400;
   color: #8e8e8e;
 `;
-
