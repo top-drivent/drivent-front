@@ -9,9 +9,18 @@ import useEnrollment from '../../hooks/api/useEnrollment';
 import { useEffect } from 'react';
 
 export default function Hotels() {
+  let changeHotel = {
+    selected: false,
+    lastHotel: {
+      id: null,
+      enrollmentId: null,
+      roomId: null,
+    },
+  };
   const { bed } = useRoom();
   const [roomSelected, setRoomSelected] = useState(false);
   const { enrollment } = useEnrollment();
+  const [changeHotelButton, setChangeHotelButton] = useState(changeHotel);
 
   useEffect(() => {
     if (bed) setRoomSelected(true);
@@ -22,7 +31,17 @@ export default function Hotels() {
       <StyledTypography variant="h4">Escolha de hotel e quarto</StyledTypography>
       {enrollment?.payment ? (
         enrollment?.payment?.ticketAccomodation ? (
-          <> {roomSelected ? <ResumeHotelSelected /> : <FormHotel setRoomSelected={setRoomSelected} />}</>
+          <>
+            {roomSelected && changeHotelButton.selected === false ? (
+              <ResumeHotelSelected setChangeHotelClick={setChangeHotelButton} />
+            ) : (
+              <FormHotel
+                setRoomSelected={setRoomSelected}
+                changeHotelButton={changeHotelButton}
+                setChangeHotelButton={setChangeHotelButton}
+              />
+            )}{' '}
+          </>
         ) : (
           <Message
             text="Sua modalidade de ingresso não inclui hospedagem
