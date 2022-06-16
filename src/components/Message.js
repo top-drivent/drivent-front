@@ -2,13 +2,13 @@ import styled from 'styled-components';
 
 export default function Message({ text }) {
   return (
-    <Container>
+    <ContainerMessage>
       <Text>{text}</Text>
-    </Container>
+    </ContainerMessage>
   );
 }
 
-const Container = styled.div`
+const ContainerMessage = styled.div`
   height: 85%;
   width: 100%;
 

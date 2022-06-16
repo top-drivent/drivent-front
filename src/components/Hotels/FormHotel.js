@@ -68,7 +68,7 @@ export default function FormHotel({ setRoomSelected, changeHotelButton, setChang
   }
 
   return (
-    <>
+    <Container>
       <StyleLabel>Primeiro, escolha seu hotel</StyleLabel>
       <List>
         {hotels?.map((el) => (
@@ -93,9 +93,16 @@ export default function FormHotel({ setRoomSelected, changeHotelButton, setChang
         </Button>
         : ''
       }
-    </>
+    </Container>
   );
 }
+const Container = styled.div`
+  padding: 0 0 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 37px;
+`;
 
 const List = styled.div`
   width: 100%;

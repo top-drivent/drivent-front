@@ -60,13 +60,13 @@ export default function Hotels() {
 
 const Container = styled.div`
   width: 100%;
-
-  padding: 0 0 50px 0;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
   align-items: start;
   gap: 37px;
+
 `;
 
 const StyledTypography = styled(Typography)`
