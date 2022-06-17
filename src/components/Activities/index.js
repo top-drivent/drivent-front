@@ -2,23 +2,23 @@ import Message from '../Message';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import useEnrollment from '../../hooks/api/useEnrollment';
+import FormActivity from './FormActivity';
 
 export default function ActivitiesPage() {
   const { enrollment } = useEnrollment();
 
   return (
     <Container>
-      <StyledTypography variant='h4'>Escolha de atividades</StyledTypography>
-      {(enrollment?.payment)? 
-        (enrollment.payment.ticketModality !== 'PRESENTIAL')? 
-          <Message 
-            text='Sua modalidade de ingresso não necessita escolher atividade. Você terá acesso a todas as atividades.'
-          />:
-          'colocar o formulario aqui': 
-        <Message 
-          text='Você precisa ter confirmado pagamento antes de fazer a escolha de atividades'
-        />
-      }
+      <StyledTypography variant="h4">Escolha de atividades</StyledTypography>
+      {enrollment?.payment ? (
+        enrollment.payment.ticketModality !== 'PRESENTIAL' ? (
+          <Message text="Sua modalidade de ingresso não necessita escolher atividade. Você terá acesso a todas as atividades." />
+        ) : (
+          <FormActivity />
+        )
+      ) : (
+        <Message text="Você precisa ter confirmado pagamento antes de fazer a escolha de atividades" />
+      )}
     </Container>
   );
 }
