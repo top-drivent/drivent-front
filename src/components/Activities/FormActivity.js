@@ -5,6 +5,7 @@ import 'dayjs/locale/pt';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useState } from 'react';
+import ActivitiesTracks from './ActivitiesTracks';
 
 export default function FormActivity() {
   dayjs.extend(advancedFormat);
@@ -15,21 +16,26 @@ export default function FormActivity() {
   const activitiesDays = [...new Set(activitiesDaysArray)];
 
   const [dayOption, setDayOption] = useState('');
+  const [selectedDayActivities, setSelectedDayActivities] = useState([]);
+  const [showLabel, setShowLabel] = useState(true);
 
-  function handleDayOption(id) {
+  function handleDayOption(id, el) {
     setDayOption(id);
+    setShowLabel(false);
+    setSelectedDayActivities(activities?.filter((element) => dayjs(element.date).format('dddd, DD/MM') === el));
   }
 
   return (
     <Container>
-      <StyleLabel>Primeiro, filtre pelo dia do evento</StyleLabel>
+      <StyleLabel showLabel={showLabel}>Primeiro, filtre pelo dia do evento</StyleLabel>
       <List>
         {activitiesDays.map((el, id) => (
-          <DayButton onClick={() => handleDayOption(`button_${id}`)} id={`button_${id}`} state={dayOption}>
+          <DayButton onClick={() => handleDayOption(`button_${id}`, el)} id={`button_${id}`} state={dayOption}>
             {el}
           </DayButton>
         ))}
       </List>
+      <ActivitiesTracks showLabel={showLabel} selectedDayActivities={selectedDayActivities} />
     </Container>
   );
 }
@@ -76,4 +82,5 @@ const StyleLabel = styled.p`
   font-size: 20px;
   font-weight: 400;
   color: #8e8e8e;
+  display: ${({ showLabel }) => (showLabel ? 'block' : 'none')};
 `;
