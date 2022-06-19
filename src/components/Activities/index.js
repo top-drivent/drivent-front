@@ -36,5 +36,5 @@ const Container = styled.div`
 `;
 
 const StyledTypography = styled(Typography)`
-  margin-bottom: 20px !important;
+  margin-bottom: -10px !important;
 `;
