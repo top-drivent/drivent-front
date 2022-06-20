@@ -5,17 +5,30 @@ import { toast } from 'react-toastify';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useState } from 'react';
-import { getSeats } from '../../services/activityApi';
+import { getSeats, newSubscriptionSeat } from '../../services/activityApi';
 import { TiDeleteOutline } from 'react-icons/ti'; 
 import { CgEnter } from 'react-icons/cg'; 
+import useEnrollment from '../../hooks/api/useEnrollment';
 
 export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {  
   dayjs.extend(advancedFormat);
   dayjs.extend(localizedFormat);
   dayjs.locale('pt');
 
+  const { enrollment } = useEnrollment();
+
   const handleNewUserActivity = (activity) => {
-    console.log('adicionar essa atividade: ', activity);
+    const newActivity = {
+      ...activity,
+      enrollmentId: enrollment.id
+    };
+    console.log(newActivity);
+    const resposta = newSubscriptionSeat(newActivity);
+    resposta.then((response) => {
+      console.log('deu bom', response.data);
+      toast('Inscrito com sucesso!');
+    });
+    resposta.catch(error => toast('Falha ao se inscrever!'));
   };
 
   return (
