@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useState } from 'react';
-import { getSeatsByActivityAndLocationId } from '../../services/activityApi';
+import { getSeats } from '../../services/activityApi';
 import { TiDeleteOutline } from 'react-icons/ti'; 
 import { CgEnter } from 'react-icons/cg'; 
 
@@ -92,15 +92,13 @@ export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
       locationId: children.locationId
     };
     const [available, setAvailable] = useState(null);
-    try {
-      const promise = getSeatsByActivityAndLocationId(body);
-      promise.then((response) => {
-        setAvailable(response.data.length);
-      });
-      promise.catch(error => toast('Falha ao carregar vagas disponiveis!'));
-    } catch {
-      toast('Falha ao buscar vagas!');
-    };
+
+    const resposta = getSeats(body);
+    resposta.then((response) => {
+      setAvailable(response.data.length);
+    });
+    resposta.catch(error => toast('Falha ao carregar vagas disponiveis!'));
+
     if (available === null) {
       return <div>...</div>;
     }
