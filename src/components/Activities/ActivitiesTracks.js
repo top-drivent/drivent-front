@@ -1,13 +1,22 @@
 import styled from 'styled-components';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt';
+import { toast } from 'react-toastify';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
+import { useState } from 'react';
+import { getSeatsByActivityAndLocationId } from '../../services/activityApi';
+import { TiDeleteOutline } from 'react-icons/ti'; 
+import { CgEnter } from 'react-icons/cg'; 
 
-export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
+export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {  
   dayjs.extend(advancedFormat);
   dayjs.extend(localizedFormat);
   dayjs.locale('pt');
+
+  const handleNewUserActivity = (activity) => {
+    console.log('adicionar essa atividade: ', activity);
+  };
 
   return (
     <Container showLabel={showLabel}>
@@ -24,6 +33,9 @@ export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
                   </ActivityTimeSlot>
                 </div>
                 <Divider />
+                <StatusWrapper>
+                  <HandleSeats>{el}</HandleSeats>
+                </StatusWrapper>
               </ActivityBox>
             ) : null
           )}
@@ -42,6 +54,9 @@ export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
                   </ActivityTimeSlot>
                 </div>
                 <Divider />
+                <StatusWrapper>
+                  <HandleSeats>{el}</HandleSeats>
+                </StatusWrapper>
               </ActivityBox>
             ) : null
           )}
@@ -60,6 +75,9 @@ export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
                   </ActivityTimeSlot>
                 </div>
                 <Divider />
+                <StatusWrapper>
+                  <HandleSeats>{el}</HandleSeats>
+                </StatusWrapper>
               </ActivityBox>
             ) : null
           )}
@@ -67,6 +85,50 @@ export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
       </Track>
     </Container>
   );
+
+  function HandleSeats({ children }) {
+    let body = {
+      activityId: children.id,
+      locationId: children.locationId
+    };
+    const [available, setAvailable] = useState(null);
+    try {
+      const promise = getSeatsByActivityAndLocationId(body);
+      promise.then((response) => {
+        setAvailable(response.data.length);
+      });
+      promise.catch(error => toast('Falha ao carregar vagas disponiveis!'));
+    } catch {
+      toast('Falha ao buscar vagas!');
+    };
+    if (available === null) {
+      return <div>...</div>;
+    }
+    if (available === 0) {
+      return (
+        <span style={{ color: 'red' }}>
+          <div><TiDeleteOutline/></div>
+          <div><p>esgotado</p></div>
+        </span>
+      );
+    };
+    if (available === 1) {
+      return (
+        <span style={{ color: 'green' }} onClick={() => handleNewUserActivity(body)}>
+          <div><CgEnter/></div>
+          <div>{available} vaga</div>
+        </span>
+      );
+    };
+    if (available > 1) {
+      return (
+        <span style={{ color: 'green' }} onClick={() => handleNewUserActivity(body)}>
+          <div> <CgEnter /> </div>
+          <div><p>{available} vagas </p></div>
+        </span>
+      );
+    };
+  };
 }
 
 const Container = styled.div`
@@ -101,9 +163,10 @@ const StyleLabel = styled.p`
 
 const ActivityBox = styled.div`
   display: flex;
+  align-items: center;
   flex-direction: row;
   width: 265px;
-  height: ${({ duration }) => `${duration * 80 + (duration - 1) * 10}px`};
+  height: ${({ duration }) => `${duration * 80 + (duration - 1) * 0.5}px`};
   background: #f1f1f1;
   border-radius: 5px;
   padding: 12px 10px 12px 10px;
@@ -135,4 +198,22 @@ const Divider = styled.div`
   border: 1px solid #cfcfcf;
   margin-left: 10px;
   margin-right: 10px;
+`;
+const StatusWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    p{
+      font-size:8px 
+    }
+    svg{
+      font-size:24px ;
+    }
+  }
 `;

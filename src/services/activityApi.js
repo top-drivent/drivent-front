@@ -1,3 +1,4 @@
+import axios from 'axios';
 import api from './api';
 
 export async function getActivities() {
@@ -5,3 +6,6 @@ export async function getActivities() {
   return response.data;
 }
 //
+export async function getSeatsByActivityAndLocationId(body) {
+  return await axios.post('http://localhost:4000/activities/seatsByActivityAndLocationId', body);
+}
