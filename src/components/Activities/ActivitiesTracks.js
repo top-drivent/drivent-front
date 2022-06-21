@@ -22,13 +22,18 @@ export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
       ...activity,
       enrollmentId: enrollment.id
     };
-    console.log(newActivity);
     const resposta = newSubscriptionSeat(newActivity);
     resposta.then((response) => {
-      console.log('deu bom', response.data);
       toast('Inscrito com sucesso!');
     });
-    resposta.catch(error => toast('Falha ao se inscrever!'));
+    resposta.catch((error) => {
+      console.log(error.response.status);
+      if (error.response.status === 409)
+        toast('Você já tem inscrições nesse horário!');
+      else {
+        toast('Erro ao se inscrever!');
+      }
+    });
   };
 
   return (
