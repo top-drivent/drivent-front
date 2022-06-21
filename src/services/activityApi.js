@@ -9,6 +9,9 @@ export async function getActivities() {
 export async function getSeats(body) {
   return await api.post('/activities/seatsByActivityAndLocationId', body);
 }
+export async function getSeatsByEnrollmentId(body) {
+  return await api.post('/activities/seatsByEnrollmentId', body);
+}
 
 export async function newSubscriptionSeat(body) {
   return await api.post('/activities/newSubscription', body);
