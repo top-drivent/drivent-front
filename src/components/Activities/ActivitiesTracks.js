@@ -141,7 +141,7 @@ export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
       return (
         <span style={{ color: 'green' }}>
           <div><CgCheckO  /></div>
-          <p>inscrito</p>
+          <StatusSubtitle>inscrito</StatusSubtitle>
         </span>
       );
     }
@@ -254,10 +254,13 @@ const StatusWrapper = styled.div`
     justify-content: center;
     align-items: center;
     p{
-      font-size:8px 
+      font-size:8px ;
     }
     svg{
       font-size:24px ;
     }
   }
+`;
+const StatusSubtitle = styled.div`
+  font-size:10px ;
 `;
