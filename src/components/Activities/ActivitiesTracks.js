@@ -5,17 +5,46 @@ import { toast } from 'react-toastify';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import { useState } from 'react';
-import { getSeats } from '../../services/activityApi';
+import { getSeats, newSubscriptionSeat, getSeatsByEnrollmentId } from '../../services/activityApi';
 import { TiDeleteOutline } from 'react-icons/ti'; 
-import { CgEnter } from 'react-icons/cg'; 
+import { CgEnter, CgCheckO } from 'react-icons/cg';
+import useEnrollment from '../../hooks/api/useEnrollment';
+import { useEffect } from 'react';
 
 export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {  
   dayjs.extend(advancedFormat);
   dayjs.extend(localizedFormat);
   dayjs.locale('pt');
 
+  const { enrollment } = useEnrollment();
+  const [seatsByEnrollmentId, setSeatsByEnrollmentId] = useState(null);
+
+  useEffect(() => {
+    if (enrollment) {
+      const promise = getSeatsByEnrollmentId({ enrollmentId: enrollment.id });
+      promise.then((response) => {
+        setSeatsByEnrollmentId(response.data);
+      });
+      promise.catch(error => toast('Falha ao carregar status de vagas disponiveis!'));
+    }
+  }, [enrollment]);
+
   const handleNewUserActivity = (activity) => {
-    console.log('adicionar essa atividade: ', activity);
+    const newActivity = {
+      ...activity,
+      enrollmentId: enrollment.id
+    };
+    const resposta = newSubscriptionSeat(newActivity);
+    resposta.then((response) => {
+      toast('Inscrito com sucesso!');
+    });
+    resposta.catch((error) => {
+      if (error.response.status === 409)
+        toast('Você já tem inscrições nesse horário!');
+      else {
+        toast('Erro ao se inscrever!');
+      }
+    });
   };
 
   return (
@@ -92,17 +121,34 @@ export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
       locationId: children.locationId
     };
     const [available, setAvailable] = useState(null);
-
+    const [alredyRegistered, setAlredyRegistered] = useState(false);
     const resposta = getSeats(body);
     resposta.then((response) => {
       setAvailable(response.data.length);
     });
     resposta.catch(error => toast('Falha ao carregar vagas disponiveis!'));
-
-    if (available === null) {
+    useEffect(() => {
+      if (seatsByEnrollmentId.length) {
+        seatsByEnrollmentId.map((el) => {
+          if (el.activityId == children.id) {
+            setAlredyRegistered(true);
+          }
+        });
+      };
+    }, [alredyRegistered]);
+    
+    if (alredyRegistered) {
+      return (
+        <span style={{ color: 'green' }}>
+          <div><CgCheckO  /></div>
+          <StatusSubtitle>inscrito</StatusSubtitle>
+        </span>
+      );
+    }
+    if (available === null && !alredyRegistered) {
       return <div>...</div>;
     }
-    if (available === 0) {
+    if (available === 0 && !alredyRegistered) {
       return (
         <span style={{ color: 'red' }}>
           <div><TiDeleteOutline/></div>
@@ -110,7 +156,7 @@ export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
         </span>
       );
     };
-    if (available === 1) {
+    if (available === 1 && !alredyRegistered) {
       return (
         <span style={{ color: 'green' }} onClick={() => handleNewUserActivity(body)}>
           <div><CgEnter/></div>
@@ -118,7 +164,7 @@ export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
         </span>
       );
     };
-    if (available > 1) {
+    if (available > 1 && !alredyRegistered) {
       return (
         <span style={{ color: 'green' }} onClick={() => handleNewUserActivity(body)}>
           <div> <CgEnter /> </div>
@@ -208,10 +254,13 @@ const StatusWrapper = styled.div`
     justify-content: center;
     align-items: center;
     p{
-      font-size:8px 
+      font-size:8px ;
     }
     svg{
       font-size:24px ;
     }
   }
+`;
+const StatusSubtitle = styled.div`
+  font-size:10px ;
 `;
