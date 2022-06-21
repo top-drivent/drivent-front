@@ -27,7 +27,6 @@ export default function ActivitiesTracks({ showLabel, selectedDayActivities }) {
       toast('Inscrito com sucesso!');
     });
     resposta.catch((error) => {
-      console.log(error.response.status);
       if (error.response.status === 409)
         toast('Você já tem inscrições nesse horário!');
       else {
